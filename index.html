@@ -101,10 +101,15 @@
             }
 
             const finalPriceINR = basePrice + additionalCost;
-            const finalPriceUSD = finalPriceINR / exchangeRate;
 
-            document.getElementById('finalPriceINR').textContent = `Final Price in INR: ₹${finalPriceINR.toFixed(2)}`;
-            document.getElementById('finalPriceUSD').textContent = `Final Price in USD: $${finalPriceUSD.toFixed(4)}`;
+            if (exchangeRate === 0) {
+                document.getElementById('finalPriceINR').textContent = `Final Price in INR: ₹${finalPriceINR.toFixed(2)}`;
+                document.getElementById('finalPriceUSD').textContent = `Exchange rate not available. Please try again later.`;
+            } else {
+                const finalPriceUSD = finalPriceINR / exchangeRate;
+                document.getElementById('finalPriceINR').textContent = `Final Price in INR: ₹${finalPriceINR.toFixed(2)}`;
+                document.getElementById('finalPriceUSD').textContent = `Final Price in USD: $${finalPriceUSD.toFixed(4)}`;
+            }
         }
 
         window.onload = fetchExchangeRate;

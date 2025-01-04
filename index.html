@@ -81,6 +81,7 @@
                 document.getElementById('exchangeRate').textContent = `Current Exchange Rate (INR to USD): 1 INR = $${exchangeRate.toFixed(4)}`;
             } catch (error) {
                 alert('Failed to fetch exchange rate. Please check your connection.');
+                document.getElementById('exchangeRate').textContent = `Exchange Rate Fetch Failed. Retry later.`;
             }
         }
 

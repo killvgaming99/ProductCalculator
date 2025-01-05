@@ -9,26 +9,26 @@
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(to right, #4facfe, #00f2fe);
+            background: linear-gradient(to right, #1e3c72, #2a5298);
             color: #fff;
         }
         header {
             text-align: center;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.7);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
         header h1 {
             margin: 0;
-            font-size: 2.5rem;
+            font-size: 2.8rem;
         }
         main {
             max-width: 900px;
             margin: 40px auto;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.2);
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
         }
         label, select, input {
             display: block;
@@ -45,6 +45,12 @@
         input[type="number"] {
             background: #fff;
         }
+        h2 {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 20px;
+        }
         .section {
             margin-bottom: 40px;
         }
@@ -60,15 +66,16 @@
         button {
             padding: 10px 20px;
             font-size: 1rem;
-            background: #00f2fe;
+            background: #4facfe;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.2s;
         }
         button:hover {
-            background: #4facfe;
+            background: #00f2fe;
+            transform: scale(1.05);
         }
         footer {
             text-align: center;
@@ -119,6 +126,7 @@
                 usdElement.textContent = `Final Price in USD: $${finalPriceUSD.toFixed(2)}`;
                 usdElement.dataset.value = finalPriceUSD.toFixed(2);
                 usdElement.classList.add('copyable');
+                document.getElementById('itemCost').value = finalPriceUSD.toFixed(2); // Auto-paste into Item Cost
             }
         }
 
@@ -171,11 +179,11 @@
         <!-- Section 2: eBay Fee Calculator -->
         <div class="section">
             <h2>eBay Fee Calculator</h2>
-            <label for="itemCost">Enter Item Cost (in USD):</label>
+            <label for="itemCost">Item Cost (in USD):</label>
             <input type="number" id="itemCost" oninput="calculateEbayFee()" placeholder="Enter item cost in USD">
-            <label for="soldPrice">Enter Sold Price (in USD):</label>
+            <label for="soldPrice">Sold Price (in USD):</label>
             <input type="number" id="soldPrice" oninput="calculateEbayFee()" placeholder="Enter sold price in USD">
-            <label for="adRate">Enter Ad Rate (in %):</label>
+            <label for="adRate">Ad Rate (in %):</label>
             <input type="number" id="adRate" oninput="calculateEbayFee()" placeholder="Enter ad rate in %">
             <p class="result" id="totalFVF">Total FVF: $0.00</p>
             <p class="result" id="transactionFee">Transaction Fee: $0.30</p>

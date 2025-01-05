@@ -106,48 +106,21 @@
             }
         }
 
-        function calculatePrice() {
-            const basePrice = parseFloat(document.getElementById('basePrice').value) || 0;
-            const weight = document.getElementById('weight').value;
-            let additionalCost = 0;
-
-            switch (weight) {
-                case '20g': additionalCost = 350; break;
-                case '50g': additionalCost = 450; break;
-                case '100g': additionalCost = 600; break;
-                case '150g': additionalCost = 650; break;
-                case '200g': additionalCost = 800; break;
-                case '250g': additionalCost = 900; break;
-                default: additionalCost = 0;
-            }
-
-            const finalPriceINR = basePrice + additionalCost;
-
-            if (exchangeRate === 0) {
-                document.getElementById('finalPriceINR').textContent = `Final Price in INR: ₹${finalPriceINR.toFixed(2)}`;
-                document.getElementById('finalPriceUSD').textContent = 'Exchange rate not available. Please try again later.';
-            } else {
-                const finalPriceUSD = finalPriceINR / exchangeRate;
-                document.getElementById('finalPriceINR').textContent = `Final Price in INR: ₹${finalPriceINR.toFixed(2)}`;
-                document.getElementById('finalPriceUSD').textContent = `Final Price in USD: $${finalPriceUSD.toFixed(2)}`;
-                document.getElementById('itemCost').value = finalPriceUSD.toFixed(2); // Auto-paste into Item Cost
-            }
-        }
-
         function calculateEbayFee() {
             const itemCost = parseFloat(document.getElementById('itemCost').value) || 0;
             const soldPrice = parseFloat(document.getElementById('soldPrice').value) || 0;
             const adRate = parseFloat(document.getElementById('adRate').value) || 0;
 
             const fvfRate = 13.25 / 100;  // 13.25% of sold price
-            const transactionFee = soldPrice < 10 ? 0.30 : 0.40;  // New logic for transaction fee
+            const transactionFee = soldPrice < 10 ? 0.30 : 0.40;  // Transaction fee logic
 
-            // Calculate the FVF (Final Value Fee) based on sold price
+            // Calculate Fees
             const fvf = soldPrice * fvfRate;
-            const adFee = (soldPrice * adRate) / 100;  // Ad fee based on percentage
+            const adFee = (soldPrice * adRate) / 100;
+            const totalFee = fvf + transactionFee + adFee;
 
-            const totalFee = fvf + transactionFee + adFee;  // Total fee includes FVF, transaction, and ad fee
-            const profit = soldPrice - itemCost - totalFee;  // Final profit after fees minus 0.28
+            // Calculate Profit
+            const profit = (soldPrice - itemCost - totalFee);
 
             // Update Results
             document.getElementById('totalFVF').textContent = `Total FVF: $${fvf.toFixed(2)}`;
@@ -155,7 +128,7 @@
             document.getElementById('adFee').textContent = `Promoted Ad Fee: $${adFee.toFixed(2)}`;
             document.getElementById('totalFee').textContent = `Total Fee: $${totalFee.toFixed(2)}`;
 
-            // Profit Color Logic
+            // Profit Display with Proper Rounding
             const profitElement = document.getElementById('profit');
             profitElement.textContent = `Profit After Fees: $${profit.toFixed(2)}`;
             profitElement.style.color = profit > 0 ? 'green' : 'red';
@@ -169,25 +142,6 @@
         <h1>Product & eBay Fee Calculator</h1>
     </header>
     <main>
-        <!-- Section 1: Product Price Calculator -->
-        <div class="section">
-            <h2>Product Price Calculator</h2>
-            <p id="exchangeRate">Fetching current exchange rate...</p>
-            <label for="basePrice">Enter Product Base Price (in INR):</label>
-            <input type="number" id="basePrice" oninput="calculatePrice()" placeholder="Enter base price in INR">
-            <label for="weight">Select Weight Variation:</label>
-            <select id="weight" onchange="calculatePrice()">
-                <option value="20g">20g</option>
-                <option value="50g">50g</option>
-                <option value="100g">100g</option>
-                <option value="150g">150g</option>
-                <option value="200g">200g</option>
-                <option value="250g">250g</option>
-            </select>
-            <p class="result" id="finalPriceINR">Final Price in INR: ₹0.00</p>
-            <p class="result" id="finalPriceUSD">Final Price in USD: $0.00</p>
-        </div>
-
         <!-- Section 2: eBay Fee Calculator -->
         <div class="section">
             <h2>eBay Fee Calculator</h2>

@@ -147,7 +147,7 @@
             const adFee = (soldPrice * adRate) / 100;  // Ad fee based on percentage
 
             const totalFee = fvf + transactionFee + adFee;  // Total fee includes FVF, transaction, and ad fee
-            const profit = soldPrice - itemCost - totalFee - 0.28;  // Final profit after fees minus 0.28
+            const profit = soldPrice - itemCost - totalFee;  // Final profit after fees minus 0.28
 
             // Update Results
             document.getElementById('totalFVF').textContent = `Total FVF: $${fvf.toFixed(2)}`;

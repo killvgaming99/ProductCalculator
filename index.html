@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product & eBay Fee Calculator</title>
-    <link rel="icon" href="Product_Calculator.png" type="image/png"> <!-- Favicon link -->
+    <link rel="icon" href="Product_Calculator.png" type="image/png"> <!-- Favicon -->
     <style>
         /* Global Styles */
         body {
@@ -56,6 +56,11 @@
             font-size: 1.2rem;
             font-weight: bold;
             color: #333;
+        }
+        .profit {
+            margin: 15px 0;
+            font-size: 1.4rem;
+            font-weight: bold;
         }
         .section {
             margin-bottom: 40px;
@@ -135,20 +140,25 @@
             const adRate = parseFloat(document.getElementById('adRate').value) || 0;
 
             const fvfRate = 13.25 / 100;  // 13.25% of sold price
-            const transactionFee = 0.30;   // Fixed transaction fee
+            const transactionFee = soldPrice < 10 ? 0.30 : 0.40;  // New logic for transaction fee
 
             // Calculate the FVF (Final Value Fee) based on sold price
             const fvf = soldPrice * fvfRate;
             const adFee = (soldPrice * adRate) / 100;  // Ad fee based on percentage
 
             const totalFee = fvf + transactionFee + adFee;  // Total fee includes FVF, transaction, and ad fee
-            const profit = soldPrice - itemCost - totalFee - 0.28;  // Final profit after fees minus 0.28
+            const profit = soldPrice - itemCost - totalFee;  // Final profit after fees minus 0.28
 
+            // Update Results
             document.getElementById('totalFVF').textContent = `Total FVF: $${fvf.toFixed(2)}`;
             document.getElementById('transactionFee').textContent = `Transaction Fee: $${transactionFee.toFixed(2)}`;
             document.getElementById('adFee').textContent = `Promoted Ad Fee: $${adFee.toFixed(2)}`;
             document.getElementById('totalFee').textContent = `Total Fee: $${totalFee.toFixed(2)}`;
-            document.getElementById('profit').textContent = `Profit After Fees: $${profit.toFixed(2)}`;
+
+            // Profit Color Logic
+            const profitElement = document.getElementById('profit');
+            profitElement.textContent = `Profit After Fees: $${profit.toFixed(2)}`;
+            profitElement.style.color = profit > 0 ? 'green' : 'red';
         }
 
         window.onload = fetchExchangeRate;
@@ -191,7 +201,7 @@
             <p class="result" id="transactionFee">Transaction Fee: $0.00</p>
             <p class="result" id="adFee">Promoted Ad Fee: $0.00</p>
             <p class="result" id="totalFee">Total Fee: $0.00</p>
-            <p class="result" id="profit">Profit After Fees: $0.00</p>
+            <p class="profit" id="profit">Profit After Fees: $0.00</p>
         </div>
 
         <footer>

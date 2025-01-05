@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product & eBay Fee Calculator</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="Product_Calculator.png">
     <style>
         /* Global Styles */
         body {
@@ -19,11 +21,6 @@
             background: #004080;
             color: #fff;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        header img {
-            width: 120px;
-            height: auto;
-            margin-bottom: 10px;
         }
         header h1 {
             margin: 0;
@@ -134,7 +131,7 @@
                 const finalPriceUSD = finalPriceINR / exchangeRate;
                 document.getElementById('finalPriceINR').textContent = `Final Price in INR: ₹${finalPriceINR.toFixed(2)}`;
                 document.getElementById('finalPriceUSD').textContent = `Final Price in USD: $${finalPriceUSD.toFixed(2)}`;
-                document.getElementById('itemCost').value = finalPriceUSD.toFixed(2); // Auto-paste into Item Cost
+                document.getElementById('itemCost').value = finalPriceUSD.toFixed(2);
             }
         }
 
@@ -143,22 +140,18 @@
             const soldPrice = parseFloat(document.getElementById('soldPrice').value) || 0;
             const adRate = parseFloat(document.getElementById('adRate').value) || 0;
 
-            const fvfRate = 13.25 / 100;  // 13.25% of sold price
-            const transactionFee = 0.30;   // Fixed transaction fee
+            const fvfRate = 13.25 / 100;
+            const transactionFee = 0.30;
 
             const fvf = soldPrice * fvfRate;
             const adFee = (soldPrice * adRate) / 100;
+
             const totalFee = fvf + transactionFee + adFee;
             const profit = soldPrice - itemCost - totalFee - 0.28;
 
-            document.getElementById('totalFVF').textContent = `Total FVF: $${fvf.toFixed(2)}`;
-            document.getElementById('transactionFee').textContent = `Transaction Fee: $${transactionFee.toFixed(2)}`;
-            document.getElementById('adFee').textContent = `Promoted Ad Fee: $${adFee.toFixed(2)}`;
-            document.getElementById('totalFee').textContent = `Total Fee: $${totalFee.toFixed(2)}`;
-
             const profitElement = document.getElementById('profit');
             profitElement.textContent = `Profit After Fees: $${profit.toFixed(2)}`;
-            profitElement.className = profit >= 0 ? 'result positive' : 'result negative';
+            profitElement.className = `result ${profit >= 0 ? 'positive' : 'negative'}`;
         }
 
         window.onload = fetchExchangeRate;
@@ -166,11 +159,9 @@
 </head>
 <body>
     <header>
-        <img src="Product_Calculator.png" alt="Product Calculator Logo">
         <h1>Product & eBay Fee Calculator</h1>
     </header>
     <main>
-        <!-- Section 1: Product Price Calculator -->
         <div class="section">
             <h2>Product Price Calculator</h2>
             <p id="exchangeRate">Fetching current exchange rate...</p>
@@ -189,7 +180,6 @@
             <p class="result" id="finalPriceUSD">Final Price in USD: $0.00</p>
         </div>
 
-        <!-- Section 2: eBay Fee Calculator -->
         <div class="section">
             <h2>eBay Fee Calculator</h2>
             <label for="itemCost">Item Cost (in USD):</label>
@@ -201,7 +191,6 @@
             <p class="result" id="totalFVF">Total FVF: $0.00</p>
             <p class="result" id="transactionFee">Transaction Fee: $0.00</p>
             <p class="result" id="adFee">Promoted Ad Fee: $0.00</p>
-            <p class="result" id="totalFee">Total Fee: $0.00</p>
             <p class="result" id="profit">Profit After Fees: $0.00</p>
         </div>
 

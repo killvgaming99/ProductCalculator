@@ -189,7 +189,7 @@
             <h2>Product Price Calculator</h2>
             <p id="exchangeRate">Fetching current exchange rate...</p>
             <label for="basePrice">Enter Product Base Price (in INR):</label>
-            <input type="text" id="basePrice" oninput="calculatePrice()" placeholder="Enter base price in INR (e.g., 60x2)">
+            <input type="text" id="basePrice" oninput="calculatePrice()" placeholder="Enter base price in INR>
             <label for="weight">Select Weight Variation:</label>
             <select id="weight" onchange="calculatePrice()">
                 <option value="20g">20g</option>
@@ -209,7 +209,7 @@
             <label for="soldPrice">Enter Sold Price (in USD):</label>
             <input type="number" id="soldPrice" oninput="calculateEbayFee()">
             <label for="adRate">Enter Promoted Ad Rate (in %):</label>
-            <input type="number" id="adRate" oninput="calculateEbayFee()" placeholder="Enter ad rate (e.g., 5)">
+            <input type="number" id="adRate" oninput="calculateEbayFee()" placeholder="Enter ad rate in percentage" value="12">
             <p id="totalFVF" class="result">Total FVF:</p>
             <p id="transactionFee" class="result">Transaction Fee:</p>
             <p id="adFee" class="result">Promoted Ad Fee:</p>

@@ -39,14 +39,17 @@
             color: #004080;
             margin-bottom: 15px;
         }
-        label, select, input {
+        label {
             display: block;
-            width: 100%;
-            margin: 10px 0;
-            padding: 10px;
+            margin: 10px 0 5px;
             font-size: 1rem;
         }
         input, select {
+            display: block;
+            width: 80%; /* Adjusted for smaller width */
+            margin: 5px auto 15px;
+            padding: 10px;
+            font-size: 1rem;
             border: 1px solid #ccc;
             border-radius: 5px;
             background: #fff;
@@ -84,10 +87,9 @@
             try {
                 const response = await fetch('https://v6.exchangerate-api.com/v6/698224ad289e31ebdc0addb4/latest/USD');
                 const data = await response.json();
-                const fetchedRate = data.conversion_rates.INR - 0.07; // Subtract 7 from the fetched exchange rate
+                const fetchedRate = data.conversion_rates.INR - 0.07;
 
-                // Save the exchange rate and the current date to localStorage
-                const today = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+                const today = new Date().toISOString().split('T')[0];
                 localStorage.setItem('exchangeRate', fetchedRate);
                 localStorage.setItem('exchangeRateDate', today);
 
@@ -105,11 +107,9 @@
             const today = new Date().toISOString().split('T')[0];
 
             if (savedRate && savedDate === today) {
-                // Use the saved rate if it's from today
                 exchangeRate = parseFloat(savedRate);
                 document.getElementById('exchangeRate').textContent = `Current Exchange Rate (1 USD to INR): ₹${exchangeRate.toFixed(2)}`;
             } else {
-                // Fetch a new rate if none is saved or the saved rate is outdated
                 fetchExchangeRate();
             }
         }
@@ -138,19 +138,19 @@
                 const finalPriceUSD = finalPriceINR / exchangeRate;
                 document.getElementById('finalPriceINR').textContent = `Final Price in INR: ₹${finalPriceINR.toFixed(2)}`;
                 document.getElementById('finalPriceUSD').textContent = `Final Price in USD: $${finalPriceUSD.toFixed(2)}`;
-                document.getElementById('itemCost').value = finalPriceUSD.toFixed(2); // Auto-paste into Item Cost
+                document.getElementById('itemCost').value = finalPriceUSD.toFixed(2);
             }
 
-            calculateEbayFee(); // Trigger fee calculations automatically
+            calculateEbayFee();
         }
 
         function calculateEbayFee() {
             const itemCost = parseFloat(document.getElementById('itemCost').value) || 0;
             const soldPrice = parseFloat(document.getElementById('soldPrice').value) || 0;
-            const adRate = parseFloat(document.getElementById('adRate').value) || 0;
+            const adRate = parseFloat(document.getElementById('adRate').value) || 12; // Default ad rate to 12%
 
-            const fvfRate = 13.25 / 100;  // 13.25% of sold price
-            const transactionFee = soldPrice < 10 ? 0.30 : 0.40;  // New logic for transaction fee
+            const fvfRate = 13.25 / 100;
+            const transactionFee = soldPrice < 10 ? 0.30 : 0.40;
 
             const fvf = soldPrice * fvfRate;
             const adFee = (soldPrice * adRate) / 100;
@@ -202,7 +202,7 @@
             <label for="soldPrice">Enter Sold Price (in USD):</label>
             <input type="number" id="soldPrice" oninput="calculateEbayFee()" placeholder="Enter sold price in USD">
             <label for="adRate">Promoted Ad Rate (%):</label>
-            <input type="number" id="adRate" oninput="calculateEbayFee()" placeholder="Enter ad rate in percentage">
+            <input type="number" id="adRate" oninput="calculateEbayFee()" placeholder="Enter ad rate percentage" value="12">
             <p id="totalFVF" class="result">Total FVF:</p>
             <p id="transactionFee" class="result">Transaction Fee:</p>
             <p id="adFee" class="result">Promoted Ad Fee:</p>
@@ -211,7 +211,7 @@
         </div>
     </main>
     <footer>
-        &copy; 2025 SRK Enterprises. All rights reserved.
+        <p>Designed & Developed by SRK Enterprises</p>
     </footer>
 </body>
 </html>

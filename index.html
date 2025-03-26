@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product & eBay Fee Calculator</title>
-    <link rel="icon" href="Product_Calculator.png" type="image/png"> <!-- Favicon -->
+    <link rel="icon" href="Product_Calculator.png" type="image/png">
     <style>
         /* Global Styles */
         body {
@@ -35,7 +35,7 @@
             color: #004080;
             margin-bottom: 15px;
         }
-        label, select, input {
+        label, input {
             display: block;
             width: 100%;
             margin: 10px 0;
@@ -58,8 +58,8 @@
             font-size: 1.4rem;
             font-weight: bold;
         }
-        .section {
-            margin-bottom: 40px;
+        .hidden {
+            display: none;
         }
         footer {
             text-align: center;
@@ -86,14 +86,20 @@
             const basePrice = parseFloat(document.getElementById('basePrice').value) || 0;
             const weight = parseFloat(document.getElementById('weight').value) || 0;
 
-            let shippingPrice = 0;
-            if (weight > 0 && weight <= 50) {
-                shippingPrice = 322.44;
-            } else if (weight > 50 && weight <= 100) {
-                shippingPrice = 384.44;
+            if (weight === 0) {
+                document.getElementById('shippingPriceContainer').classList.add('hidden');
+                return;
             } else {
-                shippingPrice = 384.44 + Math.floor((weight - 100) / 100) * 124;
+                document.getElementById('shippingPriceContainer').classList.remove('hidden');
             }
+
+            if (weight > 2000) {
+                alert("Weight limit exceeded! Max allowed weight is 2kg (2000g).");
+                document.getElementById('weight').value = 2000;
+                return;
+            }
+
+            let shippingPrice = 322.44 + Math.floor(weight / 50) * 62;
 
             const finalPriceINR = basePrice + shippingPrice;
 
@@ -142,38 +148,32 @@
         <h1>Product & eBay Fee Calculator</h1>
     </header>
     <main>
-        <div class="section">
-            <h2>Product Price Calculator</h2>
-            <p id="exchangeRate">Fetching current exchange rate...</p>
-            
-            <label for="basePrice">Enter Product Base Price (in INR):</label>
-            <input type="text" id="basePrice" oninput="calculatePrice()" placeholder="Enter base price in INR">
-            
-            <label for="weight">Enter Product Weight (in grams):</label>
-            <input type="number" id="weight" oninput="calculatePrice()" placeholder="Enter weight in grams">
+        <h2>Product Price Calculator</h2>
+        <p id="exchangeRate">Fetching current exchange rate...</p>
 
+        <label for="basePrice">Enter Product Base Price (in INR):</label>
+        <input type="text" id="basePrice" oninput="calculatePrice()" placeholder="Enter base price in INR">
+        
+        <label for="weight">Enter Product Weight (in grams):</label>
+        <input type="number" id="weight" oninput="calculatePrice()" placeholder="Enter weight in grams">
+
+        <div id="shippingPriceContainer" class="hidden">
             <p id="shippingPrice" class="result">Shipping Price: ₹0.00</p>
             <p id="finalPriceINR" class="result">Final Price in INR:</p>
             <p id="finalPriceUSD" class="result">Final Price in USD:</p>
         </div>
 
-        <div class="section">
-            <h2>eBay Fee Calculator</h2>
-            <label for="itemCost">Enter Item Cost (in USD):</label>
-            <input type="number" id="itemCost" oninput="calculateEbayFee()">
-            
-            <label for="soldPrice">Enter Sold Price (in USD):</label>
-            <input type="number" id="soldPrice" oninput="calculateEbayFee()">
-            
-            <label for="adRate">Enter Promoted Ad Rate (in %):</label>
-            <input type="number" id="adRate" oninput="calculateEbayFee()" placeholder="Enter ad rate in percentage" value="12.5">
-            
-            <p id="totalFVF" class="result">Total FVF:</p>
-            <p id="transactionFee" class="result">Transaction Fee:</p>
-            <p id="adFee" class="result">Promoted Ad Fee:</p>
-            <p id="totalFee" class="result">Total Fee:</p>
-            <p id="profit" class="profit">Profit After Fees:</p>
-        </div>
+        <h2>eBay Fee Calculator</h2>
+        <label for="itemCost">Enter Item Cost (in USD):</label>
+        <input type="number" id="itemCost" oninput="calculateEbayFee()">
+
+        <label for="soldPrice">Enter Sold Price (in USD):</label>
+        <input type="number" id="soldPrice" oninput="calculateEbayFee()">
+
+        <label for="adRate">Enter Promoted Ad Rate (in %):</label>
+        <input type="number" id="adRate" oninput="calculateEbayFee()" value="12.5">
+
+        <p id="profit" class="profit">Profit After Fees:</p>
     </main>
     <footer>
         &copy; 2025 Product Calculator. All rights reserved.

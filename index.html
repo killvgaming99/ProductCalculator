@@ -87,10 +87,12 @@
             const weight = parseFloat(document.getElementById('weight').value) || 0;
 
             let shippingPrice = 0;
-            if (weight > 0) {
-                shippingPrice = 322.44 + Math.floor(weight / 100) * 124;
+            if (weight > 0 && weight <= 50) {
+                shippingPrice = 322.44;
+            } else if (weight > 50 && weight <= 100) {
+                shippingPrice = 384.44;
             } else {
-                shippingPrice = 0;
+                shippingPrice = 384.44 + Math.floor((weight - 100) / 100) * 124;
             }
 
             const finalPriceINR = basePrice + shippingPrice;

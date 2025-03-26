@@ -21,10 +21,6 @@
             color: #fff;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-        }
         main {
             max-width: 900px;
             margin: 30px auto;
@@ -71,11 +67,6 @@
             font-size: 0.9rem;
             color: #777;
         }
-        @media (max-width: 600px) {
-            main {
-                padding: 15px;
-            }
-        }
     </style>
     <script>
         let exchangeRate = 0;
@@ -94,12 +85,12 @@
         function calculatePrice() {
             const basePrice = parseFloat(document.getElementById('basePrice').value) || 0;
             const weight = parseFloat(document.getElementById('weight').value) || 0;
-            
+
             let shippingPrice = 0;
             if (weight > 0) {
                 shippingPrice = 322.44 + Math.floor(weight / 100) * 124;
             } else {
-                shippingPrice = 0; 
+                shippingPrice = 0;
             }
 
             const finalPriceINR = basePrice + shippingPrice;
@@ -114,8 +105,33 @@
             } else {
                 document.getElementById('finalPriceUSD').textContent = 'Exchange rate not available. Please try again later.';
             }
+
+            calculateEbayFee();
         }
-        
+
+        function calculateEbayFee() {
+            const itemCost = parseFloat(document.getElementById('itemCost').value) || 0;
+            const soldPrice = parseFloat(document.getElementById('soldPrice').value) || 0;
+            const adRate = parseFloat(document.getElementById('adRate').value) || 0;
+
+            const fvfRate = 13.25 / 100;
+            const transactionFee = soldPrice < 10 ? 0.30 : 0.40;
+
+            const fvf = soldPrice * fvfRate + 0.05;
+            const adFee = (soldPrice * adRate) / 100;
+            const totalFee = fvf + transactionFee + adFee;
+            const profit = soldPrice - itemCost - totalFee;
+
+            document.getElementById('totalFVF').textContent = `Total FVF: $${fvf.toFixed(2)}`;
+            document.getElementById('transactionFee').textContent = `Transaction Fee: $${transactionFee.toFixed(2)}`;
+            document.getElementById('adFee').textContent = `Promoted Ad Fee: $${adFee.toFixed(2)}`;
+            document.getElementById('totalFee').textContent = `Total Fee: $${totalFee.toFixed(2)}`;
+            
+            const profitElement = document.getElementById('profit');
+            profitElement.textContent = `Profit After Fees: $${profit.toFixed(2)}`;
+            profitElement.style.color = profit > 0 ? 'green' : 'red';
+        }
+
         window.onload = fetchExchangeRate;
     </script>
 </head>
@@ -137,6 +153,24 @@
             <p id="shippingPrice" class="result">Shipping Price: ₹0.00</p>
             <p id="finalPriceINR" class="result">Final Price in INR:</p>
             <p id="finalPriceUSD" class="result">Final Price in USD:</p>
+        </div>
+
+        <div class="section">
+            <h2>eBay Fee Calculator</h2>
+            <label for="itemCost">Enter Item Cost (in USD):</label>
+            <input type="number" id="itemCost" oninput="calculateEbayFee()">
+            
+            <label for="soldPrice">Enter Sold Price (in USD):</label>
+            <input type="number" id="soldPrice" oninput="calculateEbayFee()">
+            
+            <label for="adRate">Enter Promoted Ad Rate (in %):</label>
+            <input type="number" id="adRate" oninput="calculateEbayFee()" placeholder="Enter ad rate in percentage" value="12.5">
+            
+            <p id="totalFVF" class="result">Total FVF:</p>
+            <p id="transactionFee" class="result">Transaction Fee:</p>
+            <p id="adFee" class="result">Promoted Ad Fee:</p>
+            <p id="totalFee" class="result">Total Fee:</p>
+            <p id="profit" class="profit">Profit After Fees:</p>
         </div>
     </main>
     <footer>

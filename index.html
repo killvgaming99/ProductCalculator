@@ -119,10 +119,14 @@
       background: var(--accent);
       color: var(--text);
       border: none;
-      border-radius: 0.5rem;
-      padding: 0.5rem 1rem;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
       cursor: pointer;
-      font-size: 0.875rem;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: background 0.3s ease;
     }
 
@@ -435,7 +439,7 @@
   
   <div class="container">
     <header>
-      <button id="theme-toggle">Switch to Dark Theme</button>
+      <button id="theme-toggle"></button>
       <div class="header-content">
         <h1>
           <i class="fas fa-calculator"></i>
@@ -652,8 +656,20 @@
     }
 
     function updateAdRate(value) {
-      document.getElementById('adRateValue').textContent = `${value}%`;
+      document.getElementById('adRateValue').textContent = `${parseFloat(value).toFixed(1)}%`;
       calculateEbayFee();
+    }
+
+    function snapAdRate() {
+      const slider = document.getElementById('adRate');
+      let value = parseFloat(slider.value);
+      // Define magnet snap points
+      const snapPoints = [5, 5.5, 12, 12.5];
+      let nearest = snapPoints.reduce((prev, curr) => {
+         return (Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev);
+      }, snapPoints[0]);
+      slider.value = nearest;
+      updateAdRate(nearest);
     }
 
     function calculateEbayFee() {
@@ -700,10 +716,10 @@
     function applyTheme(theme) {
       if (theme === 'dark') {
         document.body.classList.add('dark');
-        themeToggle.textContent = "Switch to Light Theme";
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
       } else {
         document.body.classList.remove('dark');
-        themeToggle.textContent = "Switch to Dark Theme";
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
       }
     }
 
@@ -715,6 +731,7 @@
     }
 
     themeToggle.addEventListener('click', toggleTheme);
+    document.getElementById('adRate').addEventListener('change', snapAdRate);
 
     // On page load, set the theme from localStorage or default to light
     window.onload = () => {

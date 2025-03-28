@@ -647,7 +647,7 @@
         weight = 2000;
       }
 
-      const shippingPrice = 322.44 + Math.floor(weight / 50) * 62;
+      const shippingPrice = 330.44 + Math.floor(weight / 50) * 62;
       const finalPriceINR = basePrice + shippingPrice;
       const finalPriceUSD = exchangeRate > 0 ? finalPriceINR / exchangeRate : 0;
 
